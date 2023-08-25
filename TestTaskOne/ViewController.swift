@@ -11,6 +11,7 @@ class ViewController: UIViewController {
     
     let colorMenu = UIColor(red: 0, green: 146 / 274, blue: 128 / 274, alpha: 1)
 
+    //MARK: Properties
     private var imageOnView: UIImageView!
     private var controlPanel: UIView!
     private var menuButton: UIButton!
@@ -21,6 +22,7 @@ class ViewController: UIViewController {
     private var delay: TimeInterval = 0
     private var delayArray: [TimeInterval] = []
 
+    //MARK: -
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpScreen()
@@ -30,7 +32,6 @@ class ViewController: UIViewController {
 
     //MARK: INIT
     private func setUpScreen() {
-        
         
         self.controlPanel = UIView()
         self.imageOnView = UIImageView()
@@ -56,45 +57,11 @@ class ViewController: UIViewController {
         menuButton.addTarget(self, action: #selector(showMenu(sender: )), for: .touchUpInside)
         checkPressButton = false
         
-
-        
         self.view.addSubview(controlPanel)
         self.view.addSubview(imageOnView)
         self.view.addSubview(menuButton)
         setUpContraints()
-
-        
-        
-        
-        
-    }
-    // MARK: -
-    // MARK: Constraints
-    private func setUpContraints() {
-        // ControlPanel
-        let leftControlPanel = NSLayoutConstraint(item: controlPanel!, attribute: .left, relatedBy: .equal, toItem: self.view, attribute: .left, multiplier: 1, constant: 0)
-        let rightControlPanel = NSLayoutConstraint(item: controlPanel!, attribute: .right, relatedBy: .equal, toItem: self.view, attribute: .right, multiplier: 1, constant: 0)
-        let bottomControlPanel = NSLayoutConstraint(item: controlPanel!, attribute: .bottom, relatedBy: .equal, toItem: self.view, attribute: .bottom, multiplier: 1, constant: 0)
-        let heightControlPanel = NSLayoutConstraint(item: controlPanel!, attribute: .height, relatedBy: .equal, toItem: controlPanel, attribute: .height, multiplier: 0, constant: CGFloat(AllConstants.heightMenu.rawValue))
-        
-        self.view.addConstraints([leftControlPanel, rightControlPanel, bottomControlPanel, heightControlPanel])
-        
-        // menuButton
-        let rightMenuButton = NSLayoutConstraint(item: menuButton!, attribute: .right, relatedBy: .equal, toItem: controlPanel, attribute: .right, multiplier: 1, constant: -4)
-        let topMenuButton = NSLayoutConstraint(item: menuButton!, attribute: .top, relatedBy: .equal, toItem: controlPanel, attribute: .top, multiplier: 1, constant: 0)
-        let heightMenuButton = NSLayoutConstraint(item: menuButton!, attribute: .height, relatedBy: .equal, toItem: menuButton, attribute: .height, multiplier: 0, constant: CGFloat(AllConstants.heighButtonMenu.rawValue))
-        let widthMenuButton = NSLayoutConstraint(item: menuButton!, attribute: .width, relatedBy: .equal, toItem: menuButton, attribute: .width, multiplier: 0, constant: CGFloat(AllConstants.widthButtonMenu.rawValue))
-        
-        self.view.addConstraints([rightMenuButton, topMenuButton, heightMenuButton, widthMenuButton])
-        
-        // Image
-        let leftImage = NSLayoutConstraint(item: imageOnView!, attribute: .left, relatedBy: .equal, toItem: self.view, attribute: .left, multiplier: 1, constant: 0)
-        let rightImage = NSLayoutConstraint(item: imageOnView!, attribute: .right, relatedBy: .equal, toItem: self.view, attribute: .right, multiplier: 1, constant: 0)
-        let topImage = NSLayoutConstraint(item: imageOnView!, attribute: .top, relatedBy: .equal, toItem: self.view, attribute: .top, multiplier: 1, constant: 0)
-        let bottomImage = NSLayoutConstraint(item: imageOnView!, attribute: .bottom, relatedBy: .equal, toItem: controlPanel, attribute: .top, multiplier: 1, constant: 0)
-        
-        self.view.addConstraints([leftImage, rightImage, topImage, bottomImage])
-
+ 
     }
     
     private func setUpPanelButtons() {
@@ -123,6 +90,37 @@ class ViewController: UIViewController {
         }
         
     }
+    
+    // MARK: -
+    // MARK: Constraints
+    private func setUpContraints() {
+        // ControlPanel
+        NSLayoutConstraint.activate([
+            controlPanel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+            controlPanel.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+            controlPanel.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
+            controlPanel.heightAnchor.constraint(equalToConstant: CGFloat(AllConstants.heightMenu.rawValue))
+        ])
+        
+        // menuButton
+        NSLayoutConstraint.activate([
+            menuButton.trailingAnchor.constraint(equalTo: controlPanel.trailingAnchor, constant: -4),
+            menuButton.topAnchor.constraint(equalTo: controlPanel.topAnchor),
+            menuButton.widthAnchor.constraint(equalToConstant: CGFloat(AllConstants.widthButtonMenu.rawValue)),
+            menuButton.heightAnchor.constraint(equalToConstant: CGFloat(AllConstants.heighButtonMenu.rawValue))
+        ])
+            
+        // Image
+        NSLayoutConstraint.activate([
+            imageOnView.topAnchor.constraint(equalTo: self.view.topAnchor),
+            imageOnView.bottomAnchor.constraint(equalTo: self.controlPanel.topAnchor),
+            imageOnView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+            imageOnView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor)
+        ])
+        
+
+    }
+
     //MARK: -
     //MARK: ACTION
     @objc func deleteButton(sender: UIButton) {
