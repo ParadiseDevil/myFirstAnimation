@@ -72,6 +72,7 @@ class ViewController: UIViewController {
             button.addTarget(self, action: #selector(deleteButton(sender: )), for: .touchUpInside)
                  
             // init panel button
+            button.isEnabled = false
             button.setTitle("\(index)", for: .normal)
             button.setTitleColor(.white, for: .normal)
             button.backgroundColor = colorMenu
@@ -128,36 +129,56 @@ class ViewController: UIViewController {
     }
     
     @objc func showMenu(sender: UIButton) {
+        sender.isEnabled = false
         checkPressButton = !checkPressButton
         if checkPressButton {
             upMenu()
         } else {
             downMenu()
+
         }
+
         
     }
     
     private func upMenu() {
         for index in 0 ..< AllConstants.numberOfButtonInMenu.rawValue {
             panelButtons[index].center = self.menuButton.center
+//            panelButtons[index].isEnabled = false
             // animation
-            UIView.animate(withDuration: 2.0, delay: delayArray[index], options: .curveEaseOut) {
+            UIView.animate(withDuration: 1.5, delay: delayArray[index], options: .curveEaseOut) { [weak self] in
+                guard let self = self else {return }
                 self.panelButtons[index].frame.origin.y = self.menuButton.frame.minY - self.menuButton.frame.height - 40 - (self.panelButtons[index].frame.height  + 15) * CGFloat(index)
+            } completion: { [weak self] (_) in
+                guard let self = self else {return }
+                self.panelButtons[index].isEnabled = true
             }
-            panelButtons[index].isHidden = false
+            self.panelButtons[index].isHidden = false
+            self.menuButton.isEnabled = true
+
+
+
             
         }
     }
     
     private func downMenu(){
         for index in 0 ..< AllConstants.numberOfButtonInMenu.rawValue {
-            self.panelButtons[index].frame.origin.y = self.menuButton.frame.minY - self.menuButton.frame.height - 40 - (self.panelButtons[index].frame.height  + 15) * CGFloat(index)
+            panelButtons[index].frame.origin.y = self.menuButton.frame.minY - self.menuButton.frame.height - 40 - (self.panelButtons[index].frame.height  + 15) * CGFloat(index)
+            
+            panelButtons[index].isEnabled = false
+            
             // animation
-            UIView.animate(withDuration: 2.0, delay: delayArray[index], options: .curveEaseOut) {
+            UIView.animate(withDuration: 1.5, delay: delayArray[index], options: .curveEaseOut) { [weak self] in
+                guard let self = self else {return }
                 self.panelButtons[index].center = self.menuButton.center
-            } completion: { (_) in
+            } completion: { [weak self] (_) in
+                guard let self = self else {return }
                 self.panelButtons[index].isHidden = true
+                self.menuButton.isEnabled = true
+
             }
+
            
             
         }
