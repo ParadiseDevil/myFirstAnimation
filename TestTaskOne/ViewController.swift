@@ -8,9 +8,6 @@
 import UIKit
 
 class ViewController: UIViewController {
-    
-    let colorMenu = UIColor(red: 0, green: 146 / 274, blue: 128 / 274, alpha: 1)
-
     //MARK: Properties
     private var imageOnView: UIImageView!
     private var controlPanel: UIView!
@@ -21,8 +18,10 @@ class ViewController: UIViewController {
     
     private var delay: TimeInterval = 0
     private var delayArray: [TimeInterval] = []
+    
+    let colorMenu = UIColor(red: 0, green: 146 / 274, blue: 128 / 274, alpha: 1)
 
-    //MARK: -
+    //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpScreen()
@@ -30,7 +29,7 @@ class ViewController: UIViewController {
 
     }
 
-    //MARK: INIT
+    //MARK: - INIT
     private func setUpScreen() {
         
         self.controlPanel = UIView()
@@ -91,9 +90,7 @@ class ViewController: UIViewController {
         }
         
     }
-    
-    // MARK: -
-    // MARK: Constraints
+    // MARK: - Constraints
     private func setUpContraints() {
         // ControlPanel
         NSLayoutConstraint.activate([
@@ -121,15 +118,13 @@ class ViewController: UIViewController {
         
 
     }
-
-    //MARK: -
-    //MARK: ACTION
+    //MARK: - ACTION
     @objc func deleteButton(sender: UIButton) {
         sender.isHidden = true
     }
     
     @objc func showMenu(sender: UIButton) {
-        sender.isEnabled = false
+        self.menuButton.isEnabled = false
         checkPressButton = !checkPressButton
         if checkPressButton {
             upMenu()
@@ -144,7 +139,6 @@ class ViewController: UIViewController {
     private func upMenu() {
         for index in 0 ..< AllConstants.numberOfButtonInMenu.rawValue {
             panelButtons[index].center = self.menuButton.center
-//            panelButtons[index].isEnabled = false
             // animation
             UIView.animate(withDuration: 1.5, delay: delayArray[index], options: .curveEaseOut) { [weak self] in
                 guard let self = self else {return }
@@ -152,14 +146,16 @@ class ViewController: UIViewController {
             } completion: { [weak self] (_) in
                 guard let self = self else {return }
                 self.panelButtons[index].isEnabled = true
+                
+                if index == AllConstants.numberOfButtonInMenu.rawValue - 1 {
+                    self.menuButton.isEnabled = true
+                }
             }
             self.panelButtons[index].isHidden = false
-            self.menuButton.isEnabled = true
-
-
-
+            
             
         }
+
     }
     
     private func downMenu(){
@@ -175,14 +171,11 @@ class ViewController: UIViewController {
             } completion: { [weak self] (_) in
                 guard let self = self else {return }
                 self.panelButtons[index].isHidden = true
-                self.menuButton.isEnabled = true
-
+                
+                if index == AllConstants.numberOfButtonInMenu.rawValue - 1 {
+                    self.menuButton.isEnabled = true
+                }
             }
-
-           
-            
         }
-        
-        
     }
 }
